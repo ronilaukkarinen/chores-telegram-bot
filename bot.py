@@ -7,7 +7,9 @@ Telegram Chores bot.
 
 import logging
 import os
+import time
 import json
+import re
 import ynab_api
 from ynab_api.rest import ApiException
 from pprint import pprint
@@ -56,22 +58,23 @@ def help(update: Update, context: CallbackContext):
     )
 
 # Get balance
-def balance(update: Update, context: CallbackContext):
+def tell_balance(update: Update, context: CallbackContext):
     """
     the callback for handling start command
     """
     bot: Bot = context.bot
 
+    # Connect to API
     categories = ynab_api.CategoriesApi(ynab_api.ApiClient(configuration))
 
     try:
         api_response = categories.get_category_by_id(budget_id, category_id)
-        balance = str(round(api_response.data.category.balance / 1000, 2))
+        get_balance = str(round(api_response.data.category.balance / 1000, 2))
 
         bot.send_message(
             chat_id=update.effective_chat.id,
             text=
-            "Säästöön on kertynyt on tällä hetkellä yhteensä <b>{} €</b>".format(balance),
+            "Säästöön on kertynyt on tällä hetkellä yhteensä <b>{} €</b>".format(get_balance),
             parse_mode=ParseMode.HTML,
         )
 
@@ -90,16 +93,16 @@ def start(update: Update, context: CallbackContext):
     # defining the keyboard layout
     kbd_layout = [
       ['💰 Katso saldo'],
-      ['Olohuoneen siivoaminen tavaroista (🪙 0.50 €)'],
-      ['Lastenhuoneen siivoaminen (🪙 1.00 €)'],
-      ['Tiskikoneen täyttö (🪙 0.50 €)',],
-      ['Tiskikoneen tyhjennys ja tiskipöydän siivous (esim. pullot kassiin) (🪙 1.00 €)'],
-      ['Kaikki kodin vaatteet narulle (🪙 1.00 €)'],
-      ['Kaikki kodin vaatteet ja pyyhkeet kaappeihin 3 €'],
-      ['Ruoat jääkaappiin kassista (🪙 0.50 €)'],
-      ['Roskien vienti (🪙 1.00 €)'],
-      ['Läksyt (tehtävä, jotta saa karkkirahan)'],
-      ['Kokeesta 9 tai enemmän (💶 5 €)'],
+      ['🛋 Olohuoneen siivoaminen tavaroista (🪙 0.50 €)'],
+      ['🧸 Lastenhuoneen siivoaminen (🪙 1.00 €)'],
+      ['🍽 Tiskikoneen täyttö (🪙 0.50 €)',],
+      ['🥫 Tiskikoneen tyhjennys ja tiskipöydän siivous (esim. pullot kassiin) (🪙 1.00 €)'],
+      ['🧺 Kaikki kodin vaatteet narulle (🪙 1.00 €)'],
+      ['👚 Kaikki kodin vaatteet ja pyyhkeet kaappeihin 3 €'],
+      ['🛍 Ruoat jääkaappiin kassista (🪙 0.50 €)'],
+      ['🗑 Roskien vienti (🪙 1.00 €)'],
+      ['📖 Läksyt (tehtävä, jotta saa karkkirahan)'],
+      ['🧠 Kokeesta 9 tai enemmän (💶 5 €)'],
     ]
 
     # converting layout to markup
@@ -129,16 +132,160 @@ def dosomething(update: Update, context: CallbackContext):
     """
     bot: Bot = context.bot
 
-    if 'Olohuoneen' in update.message.text:
-      bot.send_message(
-          chat_id=update.effective_chat.id,
-          text=
-          "Hienoa! 👏 Kiitos olohuoneen siivoamisesta! 🥰\n<b>🪙 0.50 € on lisätty YNABiin Lotan säästöihin!</b>",
-          parse_mode=ParseMode.HTML,
-      )
+    # Connect to API
+    categories = ynab_api.CategoriesApi(ynab_api.ApiClient(configuration))
+    api_response = categories.get_category_by_id(budget_id, category_id)
+
+    # Variables
+    get_raw_balance = api_response.data.category.balance
+    get_balance = str(round(get_raw_balance / 1000, 2))
+
+    # 50 cnt chores
+    if any( re.findall( r'olohuoneen|täyttö|ruoat', update.message.text, re.IGNORECASE ) ):
+
+      try:
+          amount = 0.50
+          amount_conversion = amount * 1000
+          new_balance_raw = get_raw_balance + amount_conversion
+          get_new_balance_human_readable = str(round(new_balance_raw / 1000, 2))
+          appended_data = { "category": { "budgeted": int(float(amount_conversion)) } }
+
+          # Add new balance to budget category
+          categories.update_month_category(budget_id, 'current', category_id, appended_data)
+
+          if any( re.findall( r'olohuoneen', update.message.text, re.IGNORECASE ) ):
+            bot.send_message(
+                chat_id=update.effective_chat.id,
+                text=
+                "Hienoa! 👏 Kiitos olohuoneen siivoamisesta! 🥰\n<b>🪙 {0} € lisätty!</b>\nSäästöissä on tämän lisäyksen jälkeen yhteensä <b>{1} €</b>.".format(amount, get_new_balance_human_readable),
+                parse_mode=ParseMode.HTML,
+            )
+
+          if any( re.findall( r'täyttö', update.message.text, re.IGNORECASE ) ):
+            bot.send_message(
+                chat_id=update.effective_chat.id,
+                text=
+                "Hienoa! 👏 Kiitos tiskikoneen täytöstä! 🥰\n<b>🪙 {0} € lisätty!</b>\nSäästöissä on tämän lisäyksen jälkeen yhteensä <b>{1} €</b>.".format(amount, get_new_balance_human_readable),
+                parse_mode=ParseMode.HTML,
+            )
+
+          if any( re.findall( r'ruoat', update.message.text, re.IGNORECASE ) ):
+            bot.send_message(
+                chat_id=update.effective_chat.id,
+                text=
+                "Hienoa! 👏 Kiitos ruokien kaappiin laittamisesta! 🥰\n<b>🪙 {0} € lisätty!</b>\nSäästöissä on tämän lisäyksen jälkeen yhteensä <b>{1} €</b>.".format(amount, get_new_balance_human_readable),
+                parse_mode=ParseMode.HTML,
+            )
+
+      except ApiException as e:
+          print("Tapahtui rajapintavirhe, @rollee: %s\n" % e)
+
+    # Chores that earn 1 euros
+    if any( re.findall( r'lastenhuoneen|tyhjennys|narulle|roskien', update.message.text, re.IGNORECASE ) ):
+
+      try:
+          amount = 1.00
+          amount_conversion = amount * 1000
+          new_balance_raw = get_raw_balance + amount_conversion
+          get_new_balance_human_readable = str(round(new_balance_raw / 1000, 2))
+          appended_data = { "category": { "budgeted": int(float(amount_conversion)) } }
+
+          # Add new balance to budget category
+          categories.update_month_category(budget_id, 'current', category_id, appended_data)
+
+          if any( re.findall( r'lastenhuoneen', update.message.text, re.IGNORECASE ) ):
+            bot.send_message(
+                chat_id=update.effective_chat.id,
+                text=
+                "Hienoa! 👏 Kiitos lastenhuoneen siivoamisesta! 🥰\n<b>🪙 {0} € lisätty!</b>\nSäästöissä on tämän lisäyksen jälkeen yhteensä <b>{1} €</b>.".format(amount, get_new_balance_human_readable),
+                parse_mode=ParseMode.HTML,
+            )
+
+          if any( re.findall( r'tyhjennys', update.message.text, re.IGNORECASE ) ):
+            bot.send_message(
+                chat_id=update.effective_chat.id,
+                text=
+                "Hienoa! 👏 Kiitos tiskikoneen tyhjennyksestä! 🥰\n<b>🪙 {0} € lisätty!</b>\nSäästöissä on tämän lisäyksen jälkeen yhteensä <b>{1} €</b>.".format(amount, get_new_balance_human_readable),
+                parse_mode=ParseMode.HTML,
+            )
+
+          if any( re.findall( r'narulle', update.message.text, re.IGNORECASE ) ):
+            bot.send_message(
+                chat_id=update.effective_chat.id,
+                text=
+                "Hienoa! 👏 Kiitos vaatteiden laittamisesta kuivumaan! 🥰\n<b>🪙 {0} € lisätty!</b>\nSäästöissä on tämän lisäyksen jälkeen yhteensä <b>{1} €</b>.".format(amount, get_new_balance_human_readable),
+                parse_mode=ParseMode.HTML,
+            )
+
+          if any( re.findall( r'roskien', update.message.text, re.IGNORECASE ) ):
+            bot.send_message(
+                chat_id=update.effective_chat.id,
+                text=
+                "Hienoa! 👏 Kiitos roskien viemisestä! 🥰\n<b>🪙 {0} € lisätty!</b>\nSäästöissä on tämän lisäyksen jälkeen yhteensä <b>{1} €</b>.".format(amount, get_new_balance_human_readable),
+                parse_mode=ParseMode.HTML,
+            )
+
+      except ApiException as e:
+          print("Tapahtui rajapintavirhe, @rollee: %s\n" % e)
+
+    # Chores that earn 3 euros
+    if any( re.findall( r'pyyhkeet', update.message.text, re.IGNORECASE ) ):
+
+      try:
+          amount = 3.00
+          amount_conversion = amount * 1000
+          new_balance_raw = get_raw_balance + amount_conversion
+          get_new_balance_human_readable = str(round(new_balance_raw / 1000, 2))
+          appended_data = { "category": { "budgeted": int(float(amount_conversion)) } }
+
+          # Add new balance to budget category
+          categories.update_month_category(budget_id, 'current', category_id, appended_data)
+
+          if any( re.findall( r'pyyhkeet', update.message.text, re.IGNORECASE ) ):
+            bot.send_message(
+                chat_id=update.effective_chat.id,
+                text=
+                "Hienoa! 👏 Kiitos vaatteiden ja pyyhkeiden laittamisesta kaappeihin! 🥰\n<b>🪙 {0} € lisätty!</b>\nSäästöissä on tämän lisäyksen jälkeen yhteensä <b>{1} €</b>.".format(amount, get_new_balance_human_readable),
+                parse_mode=ParseMode.HTML,
+            )
+
+      except ApiException as e:
+          print("Tapahtui rajapintavirhe, @rollee: %s\n" % e)
+
+    # Chores that earn 5 euros
+    if any( re.findall( r'kokeesta', update.message.text, re.IGNORECASE ) ):
+
+      try:
+          amount = 5.00
+          amount_conversion = amount * 1000
+          new_balance_raw = get_raw_balance + amount_conversion
+          get_new_balance_human_readable = str(round(new_balance_raw / 1000, 2))
+          appended_data = { "category": { "budgeted": int(float(amount_conversion)) } }
+
+          # Add new balance to budget category
+          categories.update_month_category(budget_id, 'current', category_id, appended_data)
+
+          if any( re.findall( r'kokeesta', update.message.text, re.IGNORECASE ) ):
+            bot.send_message(
+                chat_id=update.effective_chat.id,
+                text=
+                "🎉 No huhhuh, hyvä! 🥰\n<b>🪙 {0} € on nyt lisätty säästöihin!</b>\nSäästöissä on tämän lisäyksen jälkeen yhteensä <b>{1} €</b>.".format(amount, get_new_balance_human_readable),
+                parse_mode=ParseMode.HTML,
+            )
+
+      except ApiException as e:
+          print("Tapahtui rajapintavirhe, @rollee: %s\n" % e)
+
+    if 'karkkirahan' in update.message.text:
+        bot.send_message(
+            chat_id=update.effective_chat.id,
+            text=
+            "🎉 Hyvä, että teit läksyt. Jatka samaan malliin niin perjantaina saat 3 € karkkirahaa 🍬 .",
+                parse_mode=ParseMode.HTML,
+        )
 
     if 'saldo' in update.message.text:
-      balance(update, context)
+      tell_balance(update, context)
 
 def main():
     """Start the bot."""
@@ -151,7 +298,7 @@ def main():
     updater.dispatcher.add_handler(CommandHandler("ohje", help))
     updater.dispatcher.add_handler(CommandHandler("kotihommat", start))
     updater.dispatcher.add_handler(CommandHandler("peru", remove))
-    updater.dispatcher.add_handler(CommandHandler("saldo", balance))
+    updater.dispatcher.add_handler(CommandHandler("saldo", tell_balance))
     updater.dispatcher.add_handler(MessageHandler(Filters.text, dosomething))
 
     # Debug & init:
