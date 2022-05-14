@@ -157,7 +157,7 @@ def dosomething(update: Update, context: CallbackContext):
             bot.send_message(
                 chat_id=update.effective_chat.id,
                 text=
-                "Hienoa! 👏 Kiitos olohuoneen siivoamisesta! 🥰\n<b>🪙 {0} € lisätty!</b>\nSäästöissä on tämän lisäyksen jälkeen yhteensä <b>{1} €</b>.".format(amount, get_new_balance_human_readable),
+                "Hienoa! 👏 Kiitos olohuoneen siivoamisesta! 🥰\n<b>🪙 {0} € lisätty!</b>\n\nSäästöissä on tämän lisäyksen jälkeen yhteensä <b>{1} €</b>.".format(amount, get_new_balance_human_readable),
                 parse_mode=ParseMode.HTML,
             )
 
@@ -165,7 +165,7 @@ def dosomething(update: Update, context: CallbackContext):
             bot.send_message(
                 chat_id=update.effective_chat.id,
                 text=
-                "Hienoa! 👏 Kiitos tiskikoneen täytöstä! 🥰\n<b>🪙 {0} € lisätty!</b>\nSäästöissä on tämän lisäyksen jälkeen yhteensä <b>{1} €</b>.".format(amount, get_new_balance_human_readable),
+                "Hienoa! 👏 Kiitos tiskikoneen täytöstä! 🥰\n<b>🪙 {0} € lisätty!</b>\n\nSäästöissä on tämän lisäyksen jälkeen yhteensä <b>{1} €</b>.".format(amount, get_new_balance_human_readable),
                 parse_mode=ParseMode.HTML,
             )
 
@@ -173,7 +173,7 @@ def dosomething(update: Update, context: CallbackContext):
             bot.send_message(
                 chat_id=update.effective_chat.id,
                 text=
-                "Hienoa! 👏 Kiitos ruokien kaappiin laittamisesta! 🥰\n<b>🪙 {0} € lisätty!</b>\nSäästöissä on tämän lisäyksen jälkeen yhteensä <b>{1} €</b>.".format(amount, get_new_balance_human_readable),
+                "Hienoa! 👏 Kiitos ruokien kaappiin laittamisesta! 🥰\n<b>🪙 {0} € lisätty!</b>\n\nSäästöissä on tämän lisäyksen jälkeen yhteensä <b>{1} €</b>.".format(amount, get_new_balance_human_readable),
                 parse_mode=ParseMode.HTML,
             )
 
@@ -197,7 +197,7 @@ def dosomething(update: Update, context: CallbackContext):
             bot.send_message(
                 chat_id=update.effective_chat.id,
                 text=
-                "Hienoa! 👏 Kiitos lastenhuoneen siivoamisesta! 🥰\n<b>🪙 {0} € lisätty!</b>\nSäästöissä on tämän lisäyksen jälkeen yhteensä <b>{1} €</b>.".format(amount, get_new_balance_human_readable),
+                "Hienoa! 👏 Kiitos lastenhuoneen siivoamisesta! 🥰\n<b>🪙 {0} € lisätty!</b>\n\nSäästöissä on tämän lisäyksen jälkeen yhteensä <b>{1} €</b>.".format(amount, get_new_balance_human_readable),
                 parse_mode=ParseMode.HTML,
             )
 
@@ -205,7 +205,7 @@ def dosomething(update: Update, context: CallbackContext):
             bot.send_message(
                 chat_id=update.effective_chat.id,
                 text=
-                "Hienoa! 👏 Kiitos tiskikoneen tyhjennyksestä! 🥰\n<b>🪙 {0} € lisätty!</b>\nSäästöissä on tämän lisäyksen jälkeen yhteensä <b>{1} €</b>.".format(amount, get_new_balance_human_readable),
+                "Hienoa! 👏 Kiitos tiskikoneen tyhjennyksestä! 🥰\n<b>🪙 {0} € lisätty!</b>\n\nSäästöissä on tämän lisäyksen jälkeen yhteensä <b>{1} €</b>.".format(amount, get_new_balance_human_readable),
                 parse_mode=ParseMode.HTML,
             )
 
@@ -213,7 +213,7 @@ def dosomething(update: Update, context: CallbackContext):
             bot.send_message(
                 chat_id=update.effective_chat.id,
                 text=
-                "Hienoa! 👏 Kiitos vaatteiden laittamisesta kuivumaan! 🥰\n<b>🪙 {0} € lisätty!</b>\nSäästöissä on tämän lisäyksen jälkeen yhteensä <b>{1} €</b>.".format(amount, get_new_balance_human_readable),
+                "Hienoa! 👏 Kiitos vaatteiden laittamisesta kuivumaan! 🥰\n<b>🪙 {0} € lisätty!</b>\n\nSäästöissä on tämän lisäyksen jälkeen yhteensä <b>{1} €</b>.".format(amount, get_new_balance_human_readable),
                 parse_mode=ParseMode.HTML,
             )
 
@@ -221,7 +221,7 @@ def dosomething(update: Update, context: CallbackContext):
             bot.send_message(
                 chat_id=update.effective_chat.id,
                 text=
-                "Hienoa! 👏 Kiitos roskien viemisestä! 🥰\n<b>🪙 {0} € lisätty!</b>\nSäästöissä on tämän lisäyksen jälkeen yhteensä <b>{1} €</b>.".format(amount, get_new_balance_human_readable),
+                "Hienoa! 👏 Kiitos roskien viemisestä! 🥰\n<b>🪙 {0} € lisätty!</b>\n\nSäästöissä on tämän lisäyksen jälkeen yhteensä <b>{1} €</b>.".format(amount, get_new_balance_human_readable),
                 parse_mode=ParseMode.HTML,
             )
 
@@ -245,7 +245,7 @@ def dosomething(update: Update, context: CallbackContext):
             bot.send_message(
                 chat_id=update.effective_chat.id,
                 text=
-                "Hienoa! 👏 Kiitos vaatteiden ja pyyhkeiden laittamisesta kaappeihin! 🥰\n<b>🪙 {0} € lisätty!</b>\nSäästöissä on tämän lisäyksen jälkeen yhteensä <b>{1} €</b>.".format(amount, get_new_balance_human_readable),
+                "Hienoa! 👏 Kiitos vaatteiden ja pyyhkeiden laittamisesta kaappeihin! 🥰\n<b>🪙 {0} € lisätty!</b>\n\nSäästöissä on tämän lisäyksen jälkeen yhteensä <b>{1} €</b>.".format(amount, get_new_balance_human_readable),
                 parse_mode=ParseMode.HTML,
             )
 
@@ -269,7 +269,7 @@ def dosomething(update: Update, context: CallbackContext):
             bot.send_message(
                 chat_id=update.effective_chat.id,
                 text=
-                "🎉 No huhhuh, hyvä! 🥰\n<b>🪙 {0} € on nyt lisätty säästöihin!</b>\nSäästöissä on tämän lisäyksen jälkeen yhteensä <b>{1} €</b>.".format(amount, get_new_balance_human_readable),
+                "🎉 No huhhuh, hyvä! 🥰\n<b>🪙 {0} € on nyt lisätty säästöihin!</b>\n\nSäästöissä on tämän lisäyksen jälkeen yhteensä <b>{1} €</b>.".format(amount, get_new_balance_human_readable),
                 parse_mode=ParseMode.HTML,
             )
 
