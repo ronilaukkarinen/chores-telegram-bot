@@ -4,9 +4,9 @@ This bot was born because [RoosterMoney](https://roostermoney.com/) decided they
 
 The app uses Telegram API and YNAB API in a way my daughter is able to select a chore she has done simply by typing a Telegram command. Then the amount would be added to her savings budget accordingly.
 
-**Please note:** The app is still work in progress! It's not yet functional.
+**Please note:** This bot is for personal use. It might not work for you and it has direct strings translated to Finnish language.
 
-**Please note (2):** This bot is for personal use. It might not work for you and it has direct strings translated to Finnish language.
+<img src="https://user-images.githubusercontent.com/1534150/168444711-3146d91b-6acf-475e-a308-2a627acf5ba8.jpg" width="320" />
 
 ### Requirements 
 
