@@ -18,6 +18,7 @@ from telegram.ext.dispatcher import Dispatcher
 from telegram.update import Update
 from telegram.ext.callbackcontext import CallbackContext
 from telegram.parsemode import ParseMode
+import ynab_api
 
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
