@@ -141,7 +141,7 @@ def dosomething(update: Update, context: CallbackContext):
     get_balance = str(round(get_raw_balance / 1000, 2))
 
     # 50 cnt chores
-    if any( re.findall( r'olohuoneen|täyttö|ruoat', update.message.text, re.IGNORECASE ) ):
+    if any( re.findall( r'🛋|🍽|🛍', update.message.text, re.IGNORECASE ) ):
 
       try:
           amount = 0.50
@@ -153,7 +153,7 @@ def dosomething(update: Update, context: CallbackContext):
           # Add new balance to budget category
           categories.update_month_category(budget_id, 'current', category_id, appended_data)
 
-          if any( re.findall( r'olohuoneen', update.message.text, re.IGNORECASE ) ):
+          if any( re.findall( r'🛋', update.message.text, re.IGNORECASE ) ):
             bot.send_message(
                 chat_id=update.effective_chat.id,
                 text=
@@ -161,7 +161,7 @@ def dosomething(update: Update, context: CallbackContext):
                 parse_mode=ParseMode.HTML,
             )
 
-          if any( re.findall( r'täyttö', update.message.text, re.IGNORECASE ) ):
+          if any( re.findall( r'🍽', update.message.text, re.IGNORECASE ) ):
             bot.send_message(
                 chat_id=update.effective_chat.id,
                 text=
@@ -169,7 +169,7 @@ def dosomething(update: Update, context: CallbackContext):
                 parse_mode=ParseMode.HTML,
             )
 
-          if any( re.findall( r'ruoat', update.message.text, re.IGNORECASE ) ):
+          if any( re.findall( r'🛍', update.message.text, re.IGNORECASE ) ):
             bot.send_message(
                 chat_id=update.effective_chat.id,
                 text=
@@ -181,7 +181,7 @@ def dosomething(update: Update, context: CallbackContext):
           print("Tapahtui rajapintavirhe, @rollee: %s\n" % e)
 
     # Chores that earn 1 euros
-    if any( re.findall( r'lastenhuoneen|tyhjennys|narulle|roskien', update.message.text, re.IGNORECASE ) ):
+    if any( re.findall( r'🧸|🥫|🧺|🗑', update.message.text, re.IGNORECASE ) ):
 
       try:
           amount = 1.00
@@ -193,7 +193,7 @@ def dosomething(update: Update, context: CallbackContext):
           # Add new balance to budget category
           categories.update_month_category(budget_id, 'current', category_id, appended_data)
 
-          if any( re.findall( r'lastenhuoneen', update.message.text, re.IGNORECASE ) ):
+          if any( re.findall( r'🧸', update.message.text, re.IGNORECASE ) ):
             bot.send_message(
                 chat_id=update.effective_chat.id,
                 text=
@@ -201,7 +201,7 @@ def dosomething(update: Update, context: CallbackContext):
                 parse_mode=ParseMode.HTML,
             )
 
-          if any( re.findall( r'tyhjennys', update.message.text, re.IGNORECASE ) ):
+          if any( re.findall( r'🥫', update.message.text, re.IGNORECASE ) ):
             bot.send_message(
                 chat_id=update.effective_chat.id,
                 text=
@@ -209,7 +209,7 @@ def dosomething(update: Update, context: CallbackContext):
                 parse_mode=ParseMode.HTML,
             )
 
-          if any( re.findall( r'narulle', update.message.text, re.IGNORECASE ) ):
+          if any( re.findall( r'🧺', update.message.text, re.IGNORECASE ) ):
             bot.send_message(
                 chat_id=update.effective_chat.id,
                 text=
@@ -217,7 +217,7 @@ def dosomething(update: Update, context: CallbackContext):
                 parse_mode=ParseMode.HTML,
             )
 
-          if any( re.findall( r'roskien', update.message.text, re.IGNORECASE ) ):
+          if any( re.findall( r'🗑', update.message.text, re.IGNORECASE ) ):
             bot.send_message(
                 chat_id=update.effective_chat.id,
                 text=
@@ -229,7 +229,7 @@ def dosomething(update: Update, context: CallbackContext):
           print("Tapahtui rajapintavirhe, @rollee: %s\n" % e)
 
     # Chores that earn 3 euros
-    if any( re.findall( r'pyyhkeet', update.message.text, re.IGNORECASE ) ):
+    if any( re.findall( r'👚', update.message.text, re.IGNORECASE ) ):
 
       try:
           amount = 3.00
@@ -241,7 +241,7 @@ def dosomething(update: Update, context: CallbackContext):
           # Add new balance to budget category
           categories.update_month_category(budget_id, 'current', category_id, appended_data)
 
-          if any( re.findall( r'pyyhkeet', update.message.text, re.IGNORECASE ) ):
+          if any( re.findall( r'👚', update.message.text, re.IGNORECASE ) ):
             bot.send_message(
                 chat_id=update.effective_chat.id,
                 text=
@@ -253,7 +253,7 @@ def dosomething(update: Update, context: CallbackContext):
           print("Tapahtui rajapintavirhe, @rollee: %s\n" % e)
 
     # Chores that earn 5 euros
-    if any( re.findall( r'kokeesta', update.message.text, re.IGNORECASE ) ):
+    if any( re.findall( r'🧠', update.message.text, re.IGNORECASE ) ):
 
       try:
           amount = 5.00
@@ -276,7 +276,7 @@ def dosomething(update: Update, context: CallbackContext):
       except ApiException as e:
           print("Tapahtui rajapintavirhe, @rollee: %s\n" % e)
 
-    if 'karkkirahan' in update.message.text:
+    if '📖' in update.message.text:
         bot.send_message(
             chat_id=update.effective_chat.id,
             text=
@@ -284,7 +284,7 @@ def dosomething(update: Update, context: CallbackContext):
                 parse_mode=ParseMode.HTML,
         )
 
-    if 'saldo' in update.message.text:
+    if '💰' in update.message.text:
       tell_balance(update, context)
 
 def main():
@@ -298,7 +298,7 @@ def main():
     updater.dispatcher.add_handler(CommandHandler("ohje", help))
     updater.dispatcher.add_handler(CommandHandler("kotihommat", start))
     updater.dispatcher.add_handler(CommandHandler("peru", remove))
-    updater.dispatcher.add_handler(CommandHandler("saldo", tell_balance))
+    updater.dispatcher.add_handler(CommandHandler("💰", tell_balance))
     updater.dispatcher.add_handler(MessageHandler(Filters.text, dosomething))
 
     # Debug & init:
