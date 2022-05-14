@@ -276,7 +276,7 @@ def dosomething(update: Update, context: CallbackContext):
       except ApiException as e:
           print("Tapahtui rajapintavirhe, @rollee: %s\n" % e)
 
-    if '📖' in update.message.text:
+    if any( re.findall( r'📖', update.message.text, re.IGNORECASE ) ):
         bot.send_message(
             chat_id=update.effective_chat.id,
             text=
@@ -284,7 +284,7 @@ def dosomething(update: Update, context: CallbackContext):
                 parse_mode=ParseMode.HTML,
         )
 
-    if '💰' in update.message.text:
+    if any( re.findall( r'💰', update.message.text, re.IGNORECASE ) ):
       tell_balance(update, context)
 
 def main():
@@ -298,7 +298,7 @@ def main():
     updater.dispatcher.add_handler(CommandHandler("ohje", help))
     updater.dispatcher.add_handler(CommandHandler("kotihommat", start))
     updater.dispatcher.add_handler(CommandHandler("peru", remove))
-    updater.dispatcher.add_handler(CommandHandler("💰", tell_balance))
+    updater.dispatcher.add_handler(CommandHandler("saldo", tell_balance))
     updater.dispatcher.add_handler(MessageHandler(Filters.text, dosomething))
 
     # Debug & init:
