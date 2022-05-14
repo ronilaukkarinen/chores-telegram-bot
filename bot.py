@@ -148,10 +148,9 @@ def dosomething(update: Update, context: CallbackContext):
           amount_conversion = amount * 1000
           new_balance_raw = get_raw_balance + amount_conversion
           get_new_balance_human_readable = str(round(new_balance_raw / 1000, 2))
-          appended_data = { "category": { "budgeted": int(float(amount_conversion)) } }
-
-          # Add new balance to budget category
-          categories.update_month_category(budget_id, 'current', category_id, appended_data)
+          get_budgeted_raw = api_response.data.category.budgeted
+          new_amount = get_budgeted_raw + amount_conversion
+          appended_data = { "category": { "budgeted": int(float(new_amount)) } }
 
           if any( re.findall( r'🛋', update.message.text, re.IGNORECASE ) ):
             bot.send_message(
@@ -177,6 +176,9 @@ def dosomething(update: Update, context: CallbackContext):
                 parse_mode=ParseMode.HTML,
             )
 
+          # Add new balance to budget category
+          categories.update_month_category(budget_id, 'current', category_id, appended_data)
+
       except ApiException as e:
           print("Tapahtui rajapintavirhe, @rollee: %s\n" % e)
 
@@ -188,10 +190,9 @@ def dosomething(update: Update, context: CallbackContext):
           amount_conversion = amount * 1000
           new_balance_raw = get_raw_balance + amount_conversion
           get_new_balance_human_readable = str(round(new_balance_raw / 1000, 2))
-          appended_data = { "category": { "budgeted": int(float(amount_conversion)) } }
-
-          # Add new balance to budget category
-          categories.update_month_category(budget_id, 'current', category_id, appended_data)
+          get_budgeted_raw = api_response.data.category.budgeted
+          new_amount = get_budgeted_raw + amount_conversion
+          appended_data = { "category": { "budgeted": int(float(new_amount)) } }
 
           if any( re.findall( r'🧸', update.message.text, re.IGNORECASE ) ):
             bot.send_message(
@@ -225,6 +226,9 @@ def dosomething(update: Update, context: CallbackContext):
                 parse_mode=ParseMode.HTML,
             )
 
+          # Add new balance to budget category
+          categories.update_month_category(budget_id, 'current', category_id, appended_data)
+
       except ApiException as e:
           print("Tapahtui rajapintavirhe, @rollee: %s\n" % e)
 
@@ -236,10 +240,9 @@ def dosomething(update: Update, context: CallbackContext):
           amount_conversion = amount * 1000
           new_balance_raw = get_raw_balance + amount_conversion
           get_new_balance_human_readable = str(round(new_balance_raw / 1000, 2))
-          appended_data = { "category": { "budgeted": int(float(amount_conversion)) } }
-
-          # Add new balance to budget category
-          categories.update_month_category(budget_id, 'current', category_id, appended_data)
+          get_budgeted_raw = api_response.data.category.budgeted
+          new_amount = get_budgeted_raw + amount_conversion
+          appended_data = { "category": { "budgeted": int(float(new_amount)) } }
 
           if any( re.findall( r'👚', update.message.text, re.IGNORECASE ) ):
             bot.send_message(
@@ -248,6 +251,9 @@ def dosomething(update: Update, context: CallbackContext):
                 "Hienoa! 👏 Kiitos vaatteiden ja pyyhkeiden laittamisesta kaappeihin! 🥰\n<b>🪙 {0} € lisätty!</b>\n\nSäästöissä on tämän lisäyksen jälkeen yhteensä <b>{1} €</b>.".format(amount, get_new_balance_human_readable),
                 parse_mode=ParseMode.HTML,
             )
+
+          # Add new balance to budget category
+          categories.update_month_category(budget_id, 'current', category_id, appended_data)
 
       except ApiException as e:
           print("Tapahtui rajapintavirhe, @rollee: %s\n" % e)
@@ -260,10 +266,9 @@ def dosomething(update: Update, context: CallbackContext):
           amount_conversion = amount * 1000
           new_balance_raw = get_raw_balance + amount_conversion
           get_new_balance_human_readable = str(round(new_balance_raw / 1000, 2))
-          appended_data = { "category": { "budgeted": int(float(amount_conversion)) } }
-
-          # Add new balance to budget category
-          categories.update_month_category(budget_id, 'current', category_id, appended_data)
+          get_budgeted_raw = api_response.data.category.budgeted
+          new_amount = get_budgeted_raw + amount_conversion
+          appended_data = { "category": { "budgeted": int(float(new_amount)) } }
 
           if any( re.findall( r'kokeesta', update.message.text, re.IGNORECASE ) ):
             bot.send_message(
@@ -272,6 +277,9 @@ def dosomething(update: Update, context: CallbackContext):
                 "🎉 No huhhuh, hyvä! 🥰\n<b>🪙 {0} € on nyt lisätty säästöihin!</b>\n\nSäästöissä on tämän lisäyksen jälkeen yhteensä <b>{1} €</b>.".format(amount, get_new_balance_human_readable),
                 parse_mode=ParseMode.HTML,
             )
+
+          # Add new balance to budget category
+          categories.update_month_category(budget_id, 'current', category_id, appended_data)
 
       except ApiException as e:
           print("Tapahtui rajapintavirhe, @rollee: %s\n" % e)
