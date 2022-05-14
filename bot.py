@@ -7,6 +7,10 @@ Telegram Chores bot.
 
 import logging
 import os
+import json
+import ynab_api
+from ynab_api.rest import ApiException
+from pprint import pprint
 from telegram import ForceReply, Update
 from telegram.ext.filters import Filters
 from telegram.replykeyboardmarkup import ReplyKeyboardMarkup
@@ -18,13 +22,34 @@ from telegram.ext.dispatcher import Dispatcher
 from telegram.update import Update
 from telegram.ext.callbackcontext import CallbackContext
 from telegram.parsemode import ParseMode
-import ynab_api
 
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
-
 logger = logging.getLogger(__name__)
+
+# YNAB related settings
+configuration = ynab_api.Configuration()
+# Configure API key authorization: bearer
+budget_id = os.getenv('YNAB_BUDGET_ID')
+category_id = os.getenv('YNAB_CATEGORY_ID')
+configuration.api_key['Authorization'] = os.getenv('YNAB_PERSONAL_ACCESS_TOKEN')
+configuration.api_key_prefix['Authorization'] = 'Bearer'
+
+# Defining host is optional and default to https://api.youneedabudget.com/v1
+configuration.host = "https://api.youneedabudget.com/v1"
+
+# Create an instance of the API class
+api_instance = ynab_api.CategoriesApi(ynab_api.ApiClient(configuration))
+
+try:
+    api_response = api_instance.get_category_by_id(budget_id, category_id)
+    # json_result = json.loads(api_response);
+
+    pprint(api_response)
+
+except ApiException as e:
+    print("Exception when calling API: %s\n" % e)
 
 # Help
 def help(update: Update, context: CallbackContext):
@@ -41,6 +66,28 @@ def help(update: Update, context: CallbackContext):
         "Tervetuloa käyttämään <b>Rollen Rahabottia</b>. Botin käyttäminen on hyvin yksinkertaista. Voit painaa /-nappia hymiöiden/tarrojen vieressä oikeassa alalaidassa tai kirjoittaa / nähdäksesi kaikki komennot. Kysy apua @rollee:lta jos menee sormi suuhun.",
         parse_mode=ParseMode.HTML,
     )
+
+# Get balance
+# def balance(update: Update, context: CallbackContext):
+#     """
+#     the callback for handling start command
+#     """
+#     bot: Bot = context.bot
+
+#     try:
+#         update.message.reply_text("You just clicked on '%s'" % update.message.text)
+
+#         api_response = api_instance.get_category_by_id(budget_id, category_id)
+#         pprint(api_response)
+#     except ApiException as e:
+#         print("Exception when calling API: %s\n" % e)
+
+#     bot.send_message(
+#         chat_id=update.effective_chat.id,
+#         text=
+#         "Tervetuloa käyttämään <b>Rollen Rahabottia</b>. Botin käyttäminen on hyvin yksinkertaista. Voit painaa /-nappia hymiöiden/tarrojen vieressä oikeassa alalaidassa tai kirjoittaa / nähdäksesi kaikki komennot. Kysy apua @rollee:lta jos menee sormi suuhun.",
+#         parse_mode=ParseMode.HTML,
+#     )
 
 def error(update, context):
     """Log Errors caused by Updates."""

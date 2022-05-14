@@ -13,6 +13,8 @@ The app uses Telegram API and YNAB API in a way my daughter is able to select a 
 * Python 3.8
 * pipenv
 * Linux/WSL
+* [Python YNAB API](https://github.com/dmlerner/ynab-api)
+* [python-telegram-bot](https://github.com/python-telegram-bot/python-telegram-bot)
 
 ### Installation
 
@@ -30,15 +32,7 @@ peru - Peru/piilota valinnat.
 5. Rename .env-example to .env
 6. Add your personal bot `TOKEN` to .env file
 7. Run `pipenv install -r requirements.txt` (sudo might be needef or WSL)
-8. Create secrets.json and updater your [YNAB API](https://api.youneedabudget.com/) credentials to the file (you can get your budget ID from address bar when going to [app.youneedabudget.com](https://app.youneedabudget.com/)):
-
-```
-{
-   "budget_id":"xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-   "api_key":"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-}
-```
-
+8. Add [YNAB API](https://api.youneedabudget.com/) credentials to .env (you can get your budget ID from address bar when going to [app.youneedabudget.com](https://app.youneedabudget.com/)):
 9. Run `pipenv run python bot.py`
 
 ### Features (coming soon)
