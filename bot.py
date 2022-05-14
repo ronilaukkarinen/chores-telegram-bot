@@ -39,18 +39,6 @@ configuration.api_key_prefix['Authorization'] = 'Bearer'
 # Defining host is optional and default to https://api.youneedabudget.com/v1
 configuration.host = "https://api.youneedabudget.com/v1"
 
-# Create an instance of the API class
-api_instance = ynab_api.CategoriesApi(ynab_api.ApiClient(configuration))
-
-try:
-    api_response = api_instance.get_category_by_id(budget_id, category_id)
-    # json_result = json.loads(api_response);
-
-    pprint(api_response)
-
-except ApiException as e:
-    print("Exception when calling API: %s\n" % e)
-
 # Help
 def help(update: Update, context: CallbackContext):
     """
@@ -68,26 +56,27 @@ def help(update: Update, context: CallbackContext):
     )
 
 # Get balance
-# def balance(update: Update, context: CallbackContext):
-#     """
-#     the callback for handling start command
-#     """
-#     bot: Bot = context.bot
+def balance(update: Update, context: CallbackContext):
+    """
+    the callback for handling start command
+    """
+    bot: Bot = context.bot
 
-#     try:
-#         update.message.reply_text("You just clicked on '%s'" % update.message.text)
+    categories = ynab_api.CategoriesApi(ynab_api.ApiClient(configuration))
 
-#         api_response = api_instance.get_category_by_id(budget_id, category_id)
-#         pprint(api_response)
-#     except ApiException as e:
-#         print("Exception when calling API: %s\n" % e)
+    try:
+        api_response = categories.get_category_by_id(budget_id, category_id)
+        balance = str(round(api_response.data.category.balance / 1000, 2))
 
-#     bot.send_message(
-#         chat_id=update.effective_chat.id,
-#         text=
-#         "Tervetuloa käyttämään <b>Rollen Rahabottia</b>. Botin käyttäminen on hyvin yksinkertaista. Voit painaa /-nappia hymiöiden/tarrojen vieressä oikeassa alalaidassa tai kirjoittaa / nähdäksesi kaikki komennot. Kysy apua @rollee:lta jos menee sormi suuhun.",
-#         parse_mode=ParseMode.HTML,
-#     )
+        bot.send_message(
+            chat_id=update.effective_chat.id,
+            text=
+            "Säästöön on kertynyt on tällä hetkellä yhteensä <b>{} €</b>".format(balance),
+            parse_mode=ParseMode.HTML,
+        )
+
+    except ApiException as e:
+        print("Tapahtui rajapintavirhe, @rollee: %s\n" % e)
 
 def error(update, context):
     """Log Errors caused by Updates."""
@@ -100,6 +89,7 @@ def start(update: Update, context: CallbackContext):
 
     # defining the keyboard layout
     kbd_layout = [
+      ['💰 Katso saldo'],
       ['Olohuoneen siivoaminen tavaroista (🪙 0.50 €)'],
       ['Lastenhuoneen siivoaminen (🪙 1.00 €)'],
       ['Tiskikoneen täyttö (🪙 0.50 €)',],
@@ -147,6 +137,9 @@ def dosomething(update: Update, context: CallbackContext):
           parse_mode=ParseMode.HTML,
       )
 
+    if 'saldo' in update.message.text:
+      balance(update, context)
+
 def main():
     """Start the bot."""
     # Create the Updater and pass it your bot's token.
@@ -158,6 +151,7 @@ def main():
     updater.dispatcher.add_handler(CommandHandler("ohje", help))
     updater.dispatcher.add_handler(CommandHandler("kotihommat", start))
     updater.dispatcher.add_handler(CommandHandler("peru", remove))
+    updater.dispatcher.add_handler(CommandHandler("saldo", balance))
     updater.dispatcher.add_handler(MessageHandler(Filters.text, dosomething))
 
     # Debug & init:

@@ -26,6 +26,7 @@ The app uses Telegram API and YNAB API in a way my daughter is able to select a 
 ohje - Näytä ohje.
 kotihommat - Lisää tehty kotityö, näytä valinnat.
 peru - Peru/piilota valinnat.
+saldo - Näytä paljonko tällä hetkellä on kertynyt säästöjä.
 ```
 
 4. Disable privacy mode with `/setprivacy`, if this is not set the bot cannot reply to a channel
