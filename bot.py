@@ -98,7 +98,7 @@ def start(update: Update, context: CallbackContext):
       ['🍽 Tiskikoneen täyttö (🪙 0.50 €)',],
       ['🥫 Tiskikoneen tyhjennys ja tiskipöydän siivous (esim. pullot kassiin) (🪙 1.00 €)'],
       ['🧺 Kaikki kodin vaatteet narulle (🪙 1.00 €)'],
-      ['👚 Kaikki kodin vaatteet ja pyyhkeet kaappeihin 3 €'],
+      ['👚 Kaikki kodin vaatteet ja pyyhkeet kaappeihin (🪙 3 €)'],
       ['🛍 Ruoat jääkaappiin kassista (🪙 0.50 €)'],
       ['🗑 Roskien vienti (🪙 1.00 €)'],
       ['📖 Läksyt (tehtävä, jotta saa karkkirahan)'],
