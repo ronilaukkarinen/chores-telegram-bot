@@ -28,3 +28,8 @@ The app uses Telegram API and YNAB API in a way my daughter is able to select a 
 * Allow adding chores via command/bubbles
 * List chores
 * Get current savings amount
+
+### Resources that helped me
+
+* [How to create a Telegram Bot in Python in under 10 minutes](https://www.codementor.io/@karandeepbatra/part-1-how-to-create-a-telegram-bot-in-python-in-under-10-minutes-19yfdv4wrq)
+* [Making a Telegram bot using Python](https://pythonprogramming.org/making-a-telegram-bot-using-python/)
