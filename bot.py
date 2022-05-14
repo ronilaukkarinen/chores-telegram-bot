@@ -7,7 +7,7 @@ Telegram Chores bot.
 
 import logging
 import os
-from telegram.forcereply import ForceReply
+from telegram import ForceReply, Update
 from telegram.ext.filters import Filters
 from telegram.replykeyboardmarkup import ReplyKeyboardMarkup
 from telegram.replykeyboardremove import ReplyKeyboardRemove
@@ -51,15 +51,25 @@ def start(update: Update, context: CallbackContext):
     """
 
     # defining the keyboard layout
-    kbd_layout = [['Option 1', 'Option 2'], ['Option 3', 'Option 4'],
-                       ["Option 5"]]
+    kbd_layout = [
+      ['Olohuoneen siivoaminen tavaroista (🪙 0.50 €)'],
+      ['Lastenhuoneen siivoaminen (🪙 1.00 €)'],
+      ['Tiskikoneen täyttö (🪙 0.50 €)',],
+      ['Tiskikoneen tyhjennys ja tiskipöydän siivous (esim. pullot kassiin) (🪙 1.00 €)'],
+      ['Kaikki kodin vaatteet narulle (🪙 1.00 €)'],
+      ['Kaikki kodin vaatteet ja pyyhkeet kaappeihin 3 €'],
+      ['Ruoat jääkaappiin kassista (🪙 0.50 €)'],
+      ['Roskien vienti (🪙 1.00 €)'],
+      ['Läksyt (tehtävä, jotta saa karkkirahan)'],
+      ['Kokeesta 9 tai enemmän (💶 5 €)'],
+    ]
 
     # converting layout to markup
     # documentation: https://python-telegram-bot.readthedocs.io/en/stable/telegram.replykeyboardmarkup.html
     kbd = ReplyKeyboardMarkup(kbd_layout)
 
     # sending the reply so as to activate the keyboard
-    update.message.reply_text(text="Select Options", reply_markup=kbd)
+    update.message.reply_text(text="Valitse oheisistä kotitöistä. Huom, lisää vain jos on tehty! Kerro myös milloin teit, jos lisäät myöhemmin.", reply_markup=kbd)
 
 def remove(update: Update, context: CallbackContext):
     """
@@ -75,13 +85,19 @@ def remove(update: Update, context: CallbackContext):
     pass
 
 
-def echo(update: Update, context: CallbackContext):
+def dosomething(update: Update, context: CallbackContext):
     """
-    message to handle any "Option [0-9]" Regrex.
+    the callback for handling start command
     """
-    # sending the reply message with the selected option
-    update.message.reply_text("You just clicked on '%s'" % update.message.text)
-    pass
+    bot: Bot = context.bot
+
+    if 'Olohuoneen' in update.message.text:
+      bot.send_message(
+          chat_id=update.effective_chat.id,
+          text=
+          "Hienoa! 👏 Kiitos olohuoneen siivoamisesta! 🥰\n<b>🪙 0.50 € on lisätty YNABiin Lotan säästöihin!</b>",
+          parse_mode=ParseMode.HTML,
+      )
 
 def main():
     """Start the bot."""
@@ -90,18 +106,15 @@ def main():
     # Post version 12 this will no longer be necessary
     updater = Updater(os.getenv('TOKEN'), use_context=True)
 
-    # Get the dispatcher to register handlers
-    dp = updater.dispatcher
-
     # Commands
-    dp.add_handler(CommandHandler("ohje", help))
-    updater.dispatcher.add_handler(CommandHandler("kotihomma", start))
+    updater.dispatcher.add_handler(CommandHandler("ohje", help))
+    updater.dispatcher.add_handler(CommandHandler("kotihommat", start))
     updater.dispatcher.add_handler(CommandHandler("peru", remove))
-    updater.dispatcher.add_handler(MessageHandler(Filters.regex(r"Option [0-9]"), echo))
+    updater.dispatcher.add_handler(MessageHandler(Filters.text, dosomething))
 
     # Debug & init:
     # Log all errors
-    dp.add_error_handler(error)
+    updater.dispatcher.add_error_handler(error)
 
     # Start the Bot
     updater.start_polling()

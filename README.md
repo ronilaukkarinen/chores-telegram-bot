@@ -17,11 +17,20 @@ The app uses Telegram API and YNAB API in a way my daughter is able to select a 
 ### Installation
 
 1. Create your bot via [BotFather](https://t.me/botfather)
-2. Set up at least with `/newbot`, `/setdescription`, `/setname` and `/setuserpic`. Set up command options with `/setcommands`.
-3. Rename .env-example to .env
-4. Add your personal bot `TOKEN` to .env file
-5. Run `pipenv install -r requirements.txt` (sudo might be needef or WSL)
-6. Run `pipenv run python bot.py`
+2. Set up at least with `/newbot`, `/setdescription`, `/setname` and `/setuserpic`.
+3. Set up command options with `/setcommands`:
+
+```
+ohje - Näytä ohje.
+kotihommat - Lisää tehty kotityö, näytä valinnat.
+peru - Peru/piilota valinnat.
+```
+
+4. Disable privacy mode with `/setprivacy`, if this is not set the bot cannot reply to a channel
+5. Rename .env-example to .env
+6. Add your personal bot `TOKEN` to .env file
+7. Run `pipenv install -r requirements.txt` (sudo might be needef or WSL)
+8. Run `pipenv run python bot.py`
 
 ### Features (coming soon)
 
