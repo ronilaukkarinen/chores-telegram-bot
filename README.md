@@ -38,8 +38,9 @@ peru - Peru/piilota valinnat.
 ### Features (coming soon)
 
 * Allow adding chores via command/bubbles
-* List chores
-* Get current savings amount
+* Update balance directly to YNAB budget
+* Get current savings amount from YNAB
+* List chore selection and amounts
 
 ### Resources that helped me
 
