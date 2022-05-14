@@ -1,0 +1,2 @@
+python-telegram-bot==13.1
+pipenv==2022.5.2
