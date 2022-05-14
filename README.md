@@ -36,9 +36,9 @@ saldo - Näytä paljonko tällä hetkellä on kertynyt säästöjä.
 8. Add [YNAB API](https://api.youneedabudget.com/) credentials to .env (you can get your budget ID from address bar when going to [app.youneedabudget.com](https://app.youneedabudget.com/)):
 9. Run `pipenv run python bot.py`
 
-### Features (coming soon)
+### Features
 
-* Allow adding chores via command/bubbles
+* Add chores via command/bubbles
 * Update balance directly to YNAB budget
 * Get current savings amount from YNAB
 * List chore selection and amounts
