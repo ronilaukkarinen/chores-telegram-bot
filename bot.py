@@ -2,21 +2,18 @@
 # -*- coding: utf-8 -*-
 
 """
-Simple Bot to reply to Telegram messages.
-
-First, a few handler functions are defined. Then, those functions are passed to
-the Dispatcher and registered at their respective places.
-Then, the bot is started and runs until we press Ctrl-C on the command line.
-
-Usage:
-Basic Echobot example, repeats messages.
-Press Ctrl-C on the command line or send a signal to the process to stop the
-bot.
+Telegram Chores bot.
 """
 
 import logging
 import os
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+from telegram.ext.commandhandler import CommandHandler
+from telegram.ext.updater import Updater
+from telegram.ext.dispatcher import Dispatcher
+from telegram.update import Update
+from telegram.ext.callbackcontext import CallbackContext
+from telegram.bot import Bot
+from telegram.parsemode import ParseMode
 
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -24,12 +21,21 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 logger = logging.getLogger(__name__)
 
+# Help
+def help(update: Update, context: CallbackContext):
+    """
+    the callback for handling start command
+    """
+    bot: Bot = context.bot
 
-# Define a few command handlers. These usually take the two arguments update and
-# context. Error handlers also receive the raised TelegramError object in error.
-def help(update, context):
-    """Send a message when the command /help is issued, in our localized version it's /ohje."""
-    update.message.reply_text('Tervetuloa käyttämään Rollen Rahabottia. Botin käyttäminen on hyvin yksinkertaista. Voit painaa /-nappia hymiöiden/tarrojen vieressä oikeassa alalaidassa tai kirjoittaa / nähdäksesi kaikki komennot.')
+    # Added HTML Parser to the existing command handler
+    # documentation: https://python-telegram-bot.readthedocs.io/en/stable/telegram.parsemode.html#telegram.ParseMode.HTML
+    bot.send_message(
+        chat_id=update.effective_chat.id,
+        text=
+        "Tervetuloa käyttämään <b>Rollen Rahabottia</b>. Botin käyttäminen on hyvin yksinkertaista. Voit painaa /-nappia hymiöiden/tarrojen vieressä oikeassa alalaidassa tai kirjoittaa / nähdäksesi kaikki komennot. Kysy apua @rollee:lta jos menee sormi suuhun.",
+        parse_mode=ParseMode.HTML,
+    )
 
 # def echo(update, context):
 #     """Echo the user message."""
