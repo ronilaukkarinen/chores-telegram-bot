@@ -139,11 +139,11 @@ def start(update: Update, context: CallbackContext):
       ['🧠 Kokeesta 9 tai enemmän (💶 5 €)'],
     ]
 
-    # converting layout to markup
-    # documentation: https://python-telegram-bot.readthedocs.io/en/stable/telegram.replykeyboardmarkup.html
+    # Converting layout to markup
+    # Documentation: https://python-telegram-bot.readthedocs.io/en/stable/telegram.replykeyboardmarkup.html
     kbd = ReplyKeyboardMarkup(kbd_layout)
 
-    # sending the reply so as to activate the keyboard
+    # Sending the reply so as to activate the keyboard
     update.message.reply_text(text="Valitse oheisista kotitöistä. Huom, lisää vain jos on tehty! Kerro myös milloin teit, jos lisäät myöhemmin.", reply_markup=kbd)
 
 def remove(update: Update, context: CallbackContext):
@@ -152,10 +152,10 @@ def remove(update: Update, context: CallbackContext):
     """
 
     # Making a reply markup to remove keyboard
-    # documentation: https://python-telegram-bot.readthedocs.io/en/stable/telegram.replykeyboardremove.html
+    # Documentation: https://python-telegram-bot.readthedocs.io/en/stable/telegram.replykeyboardremove.html
     reply_markup = ReplyKeyboardRemove()
 
-    # sending the reply so as to remove the keyboard
+    # Sending the reply so as to remove the keyboard
     update.message.reply_text(text="Valinnat piilotettu.", reply_markup=reply_markup)
     pass
 
