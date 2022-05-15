@@ -27,6 +27,7 @@ ohje - Näytä ohje.
 kotihommat - Lisää tehty kotityö, näytä valinnat.
 peru - Peru/piilota valinnat.
 saldo - Näytä paljonko tällä hetkellä on kertynyt säästöjä.
+poista - Poista haluttu summa, esim. /poista 0.50
 ```
 
 4. Disable privacy mode with `/setprivacy`, if this is not set the bot cannot reply to a channel
