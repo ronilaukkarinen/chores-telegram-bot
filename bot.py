@@ -81,6 +81,40 @@ def tell_balance(update: Update, context: CallbackContext):
     except ApiException as e:
         print("Tapahtui rajapintavirhe, @rollee: %s\n" % e)
 
+# Substract amount
+def substract(update: Update, context: CallbackContext):
+    bot: Bot = context.bot
+
+    # Connect to API
+    categories = ynab_api.CategoriesApi(ynab_api.ApiClient(configuration))
+    api_response = categories.get_category_by_id(budget_id, category_id)
+
+    # Variables
+    get_raw_balance = api_response.data.category.balance
+    get_balance = str(round(get_raw_balance / 1000, 2))
+
+    try:
+        amount_to_substract = float(context.args[0])
+        amount_to_substract_conversion = amount_to_substract * 1000
+        new_balance_to_substract_raw = get_raw_balance - amount_to_substract_conversion
+        get_new_balance_to_substract_human_readable = str(round(new_balance_to_substract_raw / 1000, 2))
+        get_budgeted_raw = api_response.data.category.budgeted
+        new_amount_to_substract = get_budgeted_raw - amount_to_substract_conversion
+        appended_data = { "category": { "budgeted": int(new_amount_to_substract) } }
+
+        bot.send_message(
+            chat_id=update.effective_chat.id,
+            text=
+            "💸 <b>{0} € poistettu.</b>\n\nSäästöihin jäi <b>{1} €</b>.".format(amount_to_substract, get_new_balance_to_substract_human_readable),
+            parse_mode=ParseMode.HTML,
+        )
+
+        # Add new balance to budget category
+        categories.update_month_category(budget_id, 'current', category_id, appended_data)
+
+    except ApiException as e:
+        print("Tapahtui rajapintavirhe, @rollee: %s\n" % e)
+
 def error(update, context):
     """Log Errors caused by Updates."""
     logger.warning('Päivitys "%s" aiheutti virheen "%s"', update, context.error)
@@ -110,14 +144,14 @@ def start(update: Update, context: CallbackContext):
     kbd = ReplyKeyboardMarkup(kbd_layout)
 
     # sending the reply so as to activate the keyboard
-    update.message.reply_text(text="Valitse oheisistä kotitöistä. Huom, lisää vain jos on tehty! Kerro myös milloin teit, jos lisäät myöhemmin.", reply_markup=kbd)
+    update.message.reply_text(text="Valitse oheisista kotitöistä. Huom, lisää vain jos on tehty! Kerro myös milloin teit, jos lisäät myöhemmin.", reply_markup=kbd)
 
 def remove(update: Update, context: CallbackContext):
     """
     Hide choices.
     """
 
-    # making a reply markup to remove keyboard
+    # Making a reply markup to remove keyboard
     # documentation: https://python-telegram-bot.readthedocs.io/en/stable/telegram.replykeyboardremove.html
     reply_markup = ReplyKeyboardRemove()
 
@@ -307,6 +341,7 @@ def main():
     updater.dispatcher.add_handler(CommandHandler("kotihommat", start))
     updater.dispatcher.add_handler(CommandHandler("peru", remove))
     updater.dispatcher.add_handler(CommandHandler("saldo", tell_balance))
+    updater.dispatcher.add_handler(CommandHandler("poista", substract))
     updater.dispatcher.add_handler(MessageHandler(Filters.text, dosomething))
 
     # Debug & init:

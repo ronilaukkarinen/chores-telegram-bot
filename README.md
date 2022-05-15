@@ -42,6 +42,7 @@ saldo - Näytä paljonko tällä hetkellä on kertynyt säästöjä.
 * Update balance directly to YNAB budget
 * Get current savings amount from YNAB
 * List chore selection and amounts
+* Remove amounts directly from YNAB budget (if accidental taps or some money is used)
 
 ### Resources that helped me
 
